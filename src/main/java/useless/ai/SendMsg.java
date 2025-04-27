@@ -6,8 +6,6 @@ import javafx.scene.text.Font;
 
 public class SendMsg {
     private String msgText;
-    private double msgPosY = 226;
-    private final int incrementRate = 20;
 
     public String getMsgText() {
         return msgText;
@@ -20,22 +18,12 @@ public class SendMsg {
     public Label generateTextBox(String text)
     {
         Label UserResponseTxt = new Label(getMsgText());
-        //UserResponseTxt.setLayoutX(384);
-        setMsgPosY(msgPosY + incrementRate);
-        UserResponseTxt.setLayoutY(getMsgPosY());
-        //UserResponseTxt.setPrefWidth(106);
+        UserResponseTxt.setLayoutY(MessageHelper.getIncrementRate());
         UserResponseTxt.setWrapText(true);
-        UserResponseTxt.setAlignment(Pos.CENTER_RIGHT);
+        UserResponseTxt.setAlignment(Pos.TOP_RIGHT);
         UserResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 14.00));
         UserResponseTxt.setStyle("-fx-text-fill: #D9D9D9;");
+
         return UserResponseTxt;
-    }
-
-    public double getMsgPosY() {
-        return msgPosY;
-    }
-
-    public void setMsgPosY(double posY) {
-        this.msgPosY = posY;
     }
 }
