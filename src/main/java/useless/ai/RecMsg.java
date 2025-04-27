@@ -4,18 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 
 public class RecMsg 
 {
     Random r = new Random();
-
-    PauseTransition pause = new PauseTransition(Duration.seconds(3));
 
     final ArrayList<String> errorMessages = new ArrayList<>(List.of(
     "Error 6549: We are experiencing some issues.",
@@ -41,21 +37,14 @@ public class RecMsg
     ));
 
 
-    public Label generateResponseLbl()
-    {
-        Label ResponseTxt = new Label(errorMessages.get(r.nextInt(19)));
-        pause.setOnFinished(event -> 
-        {
-            ResponseTxt.setLayoutX(175);
-            ResponseTxt.setLayoutY(MessageHelper.getIncrementRate());
-            ResponseTxt.setPrefWidth(140);
-            ResponseTxt.setAlignment(Pos.TOP_RIGHT);
-            ResponseTxt.setWrapText(true);
-            ResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16.00));
-            ResponseTxt.setStyle("-fx-text-fill: #D9D9D9;");
-        });
-        pause.play();
-
-        return ResponseTxt;
+    public Label generateResponseLbl() {
+        Label responseTxt = new Label(errorMessages.get(r.nextInt(errorMessages.size())));
+        responseTxt.setPrefWidth(140);
+        responseTxt.setWrapText(true);
+        responseTxt.setAlignment(Pos.TOP_RIGHT);
+        responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+        responseTxt.setStyle("-fx-text-fill: #D9D9D9;");
+        return responseTxt;
     }
+    
 }

@@ -4,10 +4,10 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -15,7 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
+import javafx.scene.text.Font; // make sure you add this import at the top too
 import javafx.stage.Stage;
 
 public class App extends Application {
@@ -67,6 +67,19 @@ public class App extends Application {
         WelcomeTXT.setStyle("-fx-text-fill: #D9D9D9;");
         pane.getChildren().add(WelcomeTXT);
 
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(chatBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setPrefViewportWidth(450); // or whatever fits your layout
+        scrollPane.setPrefViewportHeight(400);
+        scrollPane.setStyle("-fx-background: transparent; -fx-background-color: transparent;");
+        scrollPane.setPannable(true); // optional, allows click+drag scrolling
+
+        // Place ScrollPane instead of just the HBox
+        hbox.getChildren().add(scrollPane);
+
         pane.getChildren().add(hbox);
 
         TextArea inputZone = new TextArea();
@@ -89,30 +102,13 @@ public class App extends Application {
         sendBtn.setDisable(false);
         sendBtn.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 24.00));
         sendBtn.setStyle("-fx-background-color: #2e2e2e; -fx-text-fill: #D9D9D9; -fx-border-color: #979797; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-width: 1px;");
-        sendBtn.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> { sendBtn.setBackground(new Background(new BackgroundFill(Color.web("#232323"), new CornerRadii(4.00), null))); });
-        sendBtn.addEventFilter(MouseEvent.MOUSE_RELEASED, e -> { sendBtn.setBackground(new Background(new BackgroundFill(Color.web("#2e2e2e"), new CornerRadii(4.00), null))); });
-
-        sendBtn.addEventFilter(MouseEvent.MOUSE_PRESSED, e -> { 
-                                                                Smsg.setMsgText(inputZone.getText());  
-                                                                inputZone.clear();
-                                                                VBox messageRow = new VBox(40); 
-                                                                messageRow.setPrefWidth(400);
-
-                                                                Label userMsg = Smsg.generateTextBox(Smsg.getMsgText());
-                                                                messageRow.getChildren().add(userMsg);
-
-                                                                Label botMsg = Rmsg.generateResponseLbl();
-
-                                                                HBox botMessageRow = new HBox();
-                                                                botMessageRow.setPrefWidth(400);
-                                                                botMessageRow.setAlignment(Pos.CENTER_RIGHT); // Align bot message to the right
-                                                                botMessageRow.getChildren().add(botMsg);
-
-                                                                messageRow.getChildren().add(botMessageRow);
-
-                                                                chatBox.getChildren().add(messageRow);
-
-                                                            });
+        sendBtn.setOnMousePressed(e -> setButtonBackground(sendBtn, "#232323"));
+        sendBtn.setOnMouseReleased(e -> setButtonBackground(sendBtn, "#2e2e2e"));
+        sendBtn.setOnAction(e -> {
+            sendMessage(inputZone.getText());
+            inputZone.clear();
+        });
+        
         pane.getChildren().add(sendBtn);
         
         Scene scene = new Scene(pane);
@@ -120,5 +116,28 @@ public class App extends Application {
         primaryStage.show();
     }
 
+    private void sendMessage(String text) 
+    {
+        VBox messageRow = new VBox(40); 
+        messageRow.setPrefWidth(400);
+    
+        Label userMsg = Smsg.generateTextBox(text);
+        messageRow.getChildren().add(userMsg);
+    
+        Label botMsg = Rmsg.generateResponseLbl();
+        HBox botMessageRow = new HBox(botMsg);
+        botMessageRow.setPrefWidth(400);
+        botMessageRow.setAlignment(Pos.CENTER_RIGHT);
+    
+        messageRow.getChildren().add(botMessageRow);
+        chatBox.getChildren().add(messageRow);
+    }
+    
+
+    private void setButtonBackground(Button btn, String color) 
+    {
+        btn.setBackground(new Background(new BackgroundFill(Color.web(color), new CornerRadii(4), null)));
+    }
+    
     public static void main(String[] args) { launch(args); }
 }

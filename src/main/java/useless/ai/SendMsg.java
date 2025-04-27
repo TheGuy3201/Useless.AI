@@ -15,15 +15,12 @@ public class SendMsg {
         this.msgText = msgText;
     }
 
-    public Label generateTextBox(String text)
-    {
-        Label UserResponseTxt = new Label(getMsgText());
-        UserResponseTxt.setLayoutY(MessageHelper.getIncrementRate());
-        UserResponseTxt.setWrapText(true);
-        UserResponseTxt.setAlignment(Pos.TOP_RIGHT);
-        UserResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 14.00));
-        UserResponseTxt.setStyle("-fx-text-fill: #D9D9D9;");
-
-        return UserResponseTxt;
-    }
+    public Label generateTextBox(String text) {
+        Label userResponseTxt = new Label(text);
+        userResponseTxt.setWrapText(true);
+        userResponseTxt.setAlignment(Pos.TOP_RIGHT);
+        userResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+        userResponseTxt.setStyle("-fx-text-fill: #D9D9D9;");
+        return userResponseTxt;
+    }    
 }
