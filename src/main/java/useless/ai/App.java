@@ -118,6 +118,8 @@ public class App extends Application {
 
     private void sendMessage(String text) 
     {
+        //AudioClip sound = new AudioClip(getClass().getResource("/useless/ai/sfx/message_sent.mp3").toExternalForm());
+
         VBox messageRow = new VBox(40); 
         messageRow.setPrefWidth(400);
     
@@ -131,6 +133,7 @@ public class App extends Application {
     
         messageRow.getChildren().add(botMessageRow);
         chatBox.getChildren().add(messageRow);
+        //sound.play();
     }
     
 

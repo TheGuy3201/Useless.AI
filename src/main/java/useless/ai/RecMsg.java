@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javafx.animation.PauseTransition;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 
 public class RecMsg 
@@ -38,13 +40,18 @@ public class RecMsg
 
 
     public Label generateResponseLbl() {
-        Label responseTxt = new Label(errorMessages.get(r.nextInt(errorMessages.size())));
-        responseTxt.setPrefWidth(140);
-        responseTxt.setWrapText(true);
-        responseTxt.setAlignment(Pos.TOP_RIGHT);
-        responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
-        responseTxt.setStyle("-fx-text-fill: #D9D9D9;");
-        return responseTxt;
-    }
+    Label responseTxt = new Label();
+    responseTxt.setPrefWidth(140);
+    responseTxt.setWrapText(true);
+    responseTxt.setAlignment(Pos.TOP_RIGHT);
+    responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+    responseTxt.setStyle("-fx-text-fill: #D9D9D9;");
+
+    PauseTransition delay = new PauseTransition(Duration.seconds(2)); // 2-second delay
+    delay.setOnFinished(event -> responseTxt.setText(errorMessages.get(r.nextInt(errorMessages.size()))));
+    delay.play();
+
+    return responseTxt;
+}
     
 }
