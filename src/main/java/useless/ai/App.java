@@ -19,10 +19,12 @@ import javafx.scene.text.Font; // make sure you add this import at the top too
 import javafx.stage.Stage;
 
 public class App extends Application {
-    SendMsg Smsg = new SendMsg();
-    RecMsg Rmsg = new RecMsg();
+    // Message generator classes
+    private final SendMsg Smsg = new SendMsg();
+    private final RecMsg Rmsg = new RecMsg();
 
-    VBox chatBox = new VBox(10);
+    // Chat message container
+    private final VBox chatBox = new VBox(10);
 
     @Override
     public void start(Stage primaryStage) {
@@ -63,7 +65,14 @@ public class App extends Application {
         WelcomeTXT.setLayoutY(83);
         WelcomeTXT.setPrefWidth(600);
         WelcomeTXT.setWrapText(false);
-        WelcomeTXT.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 32.00));
+        
+        // Safe font loading with fallback
+        try {
+            WelcomeTXT.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 32.00));
+        } catch (Exception e) {
+            WelcomeTXT.setFont(Font.font("Arial", 32)); // Fallback to Arial
+        }
+        
         WelcomeTXT.setStyle("-fx-text-fill: #D9D9D9;");
         pane.getChildren().add(WelcomeTXT);
 
@@ -89,7 +98,14 @@ public class App extends Application {
         inputZone.setPrefHeight(100.00);
         inputZone.setWrapText(true);
         inputZone.setPromptText("Enter Text Here");
-        inputZone.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 18.00));
+        
+        // Safe font loading with fallback
+        try {
+            inputZone.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 18.00));
+        } catch (Exception e) {
+            inputZone.setFont(Font.font("Arial", 18)); // Fallback to Arial
+        }
+        
         inputZone.setStyle("-fx-control-inner-background: #B2B2B2; -fx-background-color: #B2B2B2; -fx-text-fill: #353535; -fx-border-color: #979797; -fx-border-width: 0px; -fx-border-radius: 2px; -fx-prompt-text-fill: #656565;");
         pane.getChildren().add(inputZone);
 
@@ -100,7 +116,14 @@ public class App extends Application {
         sendBtn.setPrefHeight(82.00);
         sendBtn.setWrapText(true);
         sendBtn.setDisable(false);
-        sendBtn.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 24.00));
+        
+        // Safe font loading with fallback
+        try {
+            sendBtn.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 24.00));
+        } catch (Exception e) {
+            sendBtn.setFont(Font.font("Arial", 24)); // Fallback to Arial
+        }
+        
         sendBtn.setStyle("-fx-background-color: #2e2e2e; -fx-text-fill: #D9D9D9; -fx-border-color: #979797; -fx-border-radius: 4px; -fx-background-radius: 4px; -fx-border-width: 1px;");
         sendBtn.setOnMousePressed(e -> setButtonBackground(sendBtn, "#232323"));
         sendBtn.setOnMouseReleased(e -> setButtonBackground(sendBtn, "#2e2e2e"));
@@ -116,27 +139,39 @@ public class App extends Application {
         primaryStage.show();
     }
 
+    /**
+     * Adds a user message and a delayed AI response to the chat box.
+     * Ignores empty or null input.
+     */
     private void sendMessage(String text) 
     {
-        //AudioClip sound = new AudioClip(getClass().getResource("/useless/ai/sfx/message_sent.mp3").toExternalForm());
+        if (text == null || text.trim().isEmpty()) {
+            return;
+        }
+        // Defensive: ensure Smsg and Rmsg are not null
+        if (Smsg == null || Rmsg == null) {
+            return;
+        }
 
         VBox messageRow = new VBox(40); 
         messageRow.setPrefWidth(400);
-    
+
         Label userMsg = Smsg.generateTextBox(text);
         messageRow.getChildren().add(userMsg);
-    
+
         Label botMsg = Rmsg.generateResponseLbl();
         HBox botMessageRow = new HBox(botMsg);
         botMessageRow.setPrefWidth(400);
         botMessageRow.setAlignment(Pos.CENTER_RIGHT);
-    
+
         messageRow.getChildren().add(botMessageRow);
         chatBox.getChildren().add(messageRow);
-        //sound.play();
     }
     
 
+    /**
+     * Sets the background color of a button with rounded corners.
+     */
     private void setButtonBackground(Button btn, String color) 
     {
         btn.setBackground(new Background(new BackgroundFill(Color.web(color), new CornerRadii(4), null)));

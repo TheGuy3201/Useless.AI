@@ -40,18 +40,25 @@ public class RecMsg
 
 
     public Label generateResponseLbl() {
-    Label responseTxt = new Label();
-    responseTxt.setPrefWidth(140);
-    responseTxt.setWrapText(true);
-    responseTxt.setAlignment(Pos.TOP_RIGHT);
-    responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
-    responseTxt.setStyle("-fx-text-fill: #D9D9D9;");
+        Label responseTxt = new Label();
+        responseTxt.setPrefWidth(140);
+        responseTxt.setWrapText(true);
+        responseTxt.setAlignment(Pos.TOP_RIGHT);
+        
+        // Safe font loading with fallback
+        try {
+            responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+        } catch (Exception e) {
+            responseTxt.setFont(Font.font("Arial", 16)); // Fallback to Arial
+        }
+        
+        responseTxt.setStyle("-fx-text-fill: #D9D9D9;");
 
-    PauseTransition delay = new PauseTransition(Duration.seconds(2)); // 2-second delay
-    delay.setOnFinished(event -> responseTxt.setText(errorMessages.get(r.nextInt(errorMessages.size()))));
-    delay.play();
+        PauseTransition delay = new PauseTransition(Duration.seconds(2)); // 2-second delay
+        delay.setOnFinished(event -> responseTxt.setText(errorMessages.get(r.nextInt(errorMessages.size()))));
+        delay.play();
 
-    return responseTxt;
-}
+        return responseTxt;
+    }
     
 }

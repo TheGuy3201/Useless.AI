@@ -19,7 +19,14 @@ public class SendMsg {
         Label userResponseTxt = new Label(text);
         userResponseTxt.setWrapText(true);
         userResponseTxt.setAlignment(Pos.TOP_RIGHT);
-        userResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+        
+        // Safe font loading with fallback
+        try {
+            userResponseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+        } catch (Exception e) {
+            userResponseTxt.setFont(Font.font("Arial", 16)); // Fallback to Arial
+        }
+        
         userResponseTxt.setStyle("-fx-text-fill: #D9D9D9;");
         return userResponseTxt;
     }    

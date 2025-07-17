@@ -1,7 +1,7 @@
 module useless.ai {
-    requires javafx.controls;
-    requires javafx.fxml;
-    requires javafx.graphics;
+    requires transitive javafx.controls;
+    requires transitive javafx.fxml;
+    requires transitive javafx.graphics;
     requires java.desktop;
     
     exports useless.ai;    
