@@ -67,9 +67,16 @@ public class App extends Application {
         WelcomeTXT.setWrapText(false);
         
         // Safe font loading with fallback
+        Font customFont = null;
         try {
-            WelcomeTXT.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 32.00));
+            customFont = Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 32.00);
         } catch (Exception e) {
+            System.out.println("Custom font not found, using default font");
+        }
+        
+        if (customFont != null) {
+            WelcomeTXT.setFont(customFont);
+        } else {
             WelcomeTXT.setFont(Font.font("Arial", 32)); // Fallback to Arial
         }
         
@@ -100,9 +107,16 @@ public class App extends Application {
         inputZone.setPromptText("Enter Text Here");
         
         // Safe font loading with fallback
+        Font inputFont = null;
         try {
-            inputZone.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 18.00));
+            inputFont = Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 18.00);
         } catch (Exception e) {
+            System.out.println("Custom font not found for input area, using default font");
+        }
+        
+        if (inputFont != null) {
+            inputZone.setFont(inputFont);
+        } else {
             inputZone.setFont(Font.font("Arial", 18)); // Fallback to Arial
         }
         
@@ -118,9 +132,16 @@ public class App extends Application {
         sendBtn.setDisable(false);
         
         // Safe font loading with fallback
+        Font buttonFont = null;
         try {
-            sendBtn.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 24.00));
+            buttonFont = Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 24.00);
         } catch (Exception e) {
+            System.out.println("Custom font not found for button, using default font");
+        }
+        
+        if (buttonFont != null) {
+            sendBtn.setFont(buttonFont);
+        } else {
             sendBtn.setFont(Font.font("Arial", 24)); // Fallback to Arial
         }
         

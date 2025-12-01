@@ -46,9 +46,16 @@ public class RecMsg
         responseTxt.setAlignment(Pos.TOP_RIGHT);
         
         // Safe font loading with fallback
+        Font customFont = null;
         try {
-            responseTxt.setFont(Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16));
+            customFont = Font.loadFont(getClass().getResourceAsStream("/useless/ai/fonts/Lato.ttf"), 16);
         } catch (Exception e) {
+            System.out.println("Custom font not found in RecMsg, using default font");
+        }
+        
+        if (customFont != null) {
+            responseTxt.setFont(customFont);
+        } else {
             responseTxt.setFont(Font.font("Arial", 16)); // Fallback to Arial
         }
         
